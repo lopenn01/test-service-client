@@ -1,0 +1,56 @@
+plugins {
+  id 'java'
+  id 'java-library'
+  id 'eclipse'
+  id 'project-report'
+  id 'org.springframework.boot' version '2.7.5'
+  id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+//  id 'org.springframework.boot' version '2.5.12'
+//  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'com.palantir.docker' version "0.34.0"
+}
+
+sourceCompatibility = '11'
+
+defaultTasks 'bootJar'
+
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+/*
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(11))
+  }
+}
+*/
+
+configurations.all {
+  resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+  exclude group: "org.apache.logging.log4j", module: "log4j-to-slf4j"
+  exclude group: "org.apache.logging.log4j", module: "log4j-api"
+}
+
+repositories {
+  mavenCentral()
+}
+
+test {
+  useJUnitPlatform()
+  testLogging {
+    events 'passed', 'skipped', 'failed'
+  }
+}
+
+dockerPrepare {
+  inputs.files bootJar
+}
+
+docker {
+  dependsOn dockerPrepare
+  name "${project.name}:${project.version}"
+  copySpec.from("${buildDir}/libs").into("build/libs")
+}
