@@ -3,7 +3,7 @@ plugins {
   id 'java-library'
   id 'eclipse'
   id 'project-report'
-  id 'org.springframework.boot' version '2.7.5'
+  id 'org.springframework.boot' version '2.7.2'
   id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 //  id 'org.springframework.boot' version '2.5.12'
 //  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -16,6 +16,10 @@ defaultTasks 'bootJar'
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework:spring-webflux'
+  implementation "io.projectreactor.netty:reactor-netty-core:1.0.23"
+  implementation "io.projectreactor.netty:reactor-netty-http:1.0.23"
+  implementation "io.projectreactor:reactor-core:3.4.23"
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

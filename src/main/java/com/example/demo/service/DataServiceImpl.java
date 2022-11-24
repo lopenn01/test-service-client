@@ -1,17 +1,14 @@
 package com.example.demo.service;
 
-import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.demo.dto.DataResult;
 import com.example.demo.dto.DataResultCode;
@@ -24,22 +21,19 @@ public class DataServiceImpl implements DataService {
   @Value("${app.source.url}")
   private String sourceUrl;
 
+  @Autowired private WebClient webClient;
+
   public DataResult getData(String imageNo) {
     try {
-      var content = "{}";
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentLength(content.getBytes(StandardCharsets.UTF_8).length);
-      HttpEntity<String> httpReq = new HttpEntity<>(content, headers);
-      var rf = new SimpleClientHttpRequestFactory();
-      rf.setBufferRequestBody(false);
-      ResponseEntity<String> httpResponse =
-          new RestTemplate(rf)
-              .getForEntity(
-                  sourceUrl
-                      + "nossop/get-image"
-                      + (StringUtils.hasText(imageNo) ? "/" + imageNo : ""),
-                  String.class);
-      var responseStr = httpResponse.getBody();
+      var httpHeaders = new HashMap<String, String>();
+      var responseStr =
+          webClient
+              .get()
+              .uri(sourceUrl + (StringUtils.hasText(imageNo) ? "/" + imageNo : ""))
+              .headers(headers -> headers.setAll(httpHeaders))
+              .retrieve()
+              .bodyToMono(String.class)
+              .block();
 
       if (StringUtils.hasText(responseStr)) {
         var result = new DataResult();
