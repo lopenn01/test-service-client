@@ -6,7 +6,7 @@ COPY build/libs/test-webclient-*.jar test-webclient.jar
 EXPOSE 8080
 
 CMD java \
-    -Xmx320M \
+    -Xmx250M \
     -noverify -XX:TieredStopAtLevel=1 \
     -XX:NativeMemoryTracking=summary -XX:+UnlockDiagnosticVMOptions -XX:+PrintNMTStatistics \
     -Dio.netty.leakDetection.level=paranoid \
