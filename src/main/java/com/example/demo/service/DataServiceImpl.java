@@ -5,7 +5,6 @@ import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -29,16 +28,12 @@ public class DataServiceImpl implements DataService {
       var content = "{}";
       HttpHeaders headers = new HttpHeaders();
       headers.setContentLength(content.getBytes(StandardCharsets.UTF_8).length);
-      HttpEntity<String> httpReq = new HttpEntity<>(content, headers);
       var rf = new SimpleClientHttpRequestFactory();
       rf.setBufferRequestBody(false);
       ResponseEntity<String> httpResponse =
           new RestTemplate(rf)
               .getForEntity(
-                  sourceUrl
-                      + "nossop/get-image"
-                      + (StringUtils.hasText(imageNo) ? "/" + imageNo : ""),
-                  String.class);
+                  sourceUrl + (StringUtils.hasText(imageNo) ? "/" + imageNo : ""), String.class);
       var responseStr = httpResponse.getBody();
 
       if (StringUtils.hasText(responseStr)) {
