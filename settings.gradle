@@ -5,5 +5,5 @@ pluginManagement {
   }
 }
 
-rootProject.name = 'test-rest-template'
+rootProject.name = 'test-backend'
 

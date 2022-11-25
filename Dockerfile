@@ -1,10 +1,10 @@
 FROM adoptopenjdk/openjdk11
 
 WORKDIR /app/example
-COPY build/libs/test-rest-template-*.jar test-rest-template.jar
+COPY build/libs/test-test-backend-*.jar test-test-backend.jar
 
 EXPOSE 8080
 
 CMD java \
-    -Xmx190M \
-	-jar test-rest-template.jar
+    -Xmx200M \
+	-jar test-test-backend.jar
