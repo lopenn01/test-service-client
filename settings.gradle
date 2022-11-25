@@ -5,5 +5,5 @@ pluginManagement {
   }
 }
 
-rootProject.name = 'test-webclient'
+rootProject.name = 'test-webclient-tomcat'
 
