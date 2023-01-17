@@ -28,14 +28,14 @@ public class Controller {
     }
     var num = ++lastOrder % 4;
     if (num == 0) {
-      log.debug("order: [{}], data byte length=[{}]", num, data.getBytes().length);
+      log.debug("order remainder: [{}], data byte length=[{}]", num, data.getBytes().length);
       return data;
     }
     var sb = new StringBuilder();
     for (int i = 0; i <= num; i++) {
       sb.append(data);
     }
-    log.debug("order: [{}], data byte length=[{}]", num, sb.toString().getBytes().length);
+    log.debug("order remainder: [{}], data byte length=[{}]", num, sb.toString().getBytes().length);
     return sb.toString();
   }
 
